@@ -37,7 +37,8 @@ Analisa uma amostra do chat para identificar o nicho, sugerir categorias e palav
 - **Execução:** `python 00_analisar_historico.py`
 
 ### Fase 1: Pré-Filtro e Categorização Local
-Realiza uma limpeza bruta via Python, removendo metadados (timestamps, números) e separando as mensagens em arquivos Markdown por categoria.
+Realiza uma limpeza bruta via Python, removendo metadados (timestamps, números) e separando as mensagens em arquivos Markdown por categoria. Há também um script extra para agrupar conversas por sessões temporais.
+- **Execução Opcional (Sessões temporais):** `python 01_b_filter_history.py`
 - **Dica:** Edite as categorias e palavras-chave dentro do script `01_extract_insights.py` com base no resultado da Fase 0.
 - **Execução:** `python 01_extract_insights.py`
 
@@ -46,9 +47,10 @@ Usa a IA para processar os arquivos em blocos, removendo informações datadas (
 - **Configuração:** O comportamento da IA é definido pelo arquivo `prompt_consolidador.xml`.
 - **Execução:** `python 02_gerar_ebook.py`
 
-### Fase 3: Aglutinação Semântica
-Utiliza modelos de contexto massivo para desfragmentar o conteúdo. Assuntos repetidos são unidos em sub-capítulos coesos, eliminando redundâncias.
-- **Execução:** `python 03_aglutinador_semantico.py`
+### Fase 3: Aglutinação Semântica e Polimento
+Utiliza modelos de contexto massivo para desfragmentar o conteúdo. Assuntos repetidos são unidos em sub-capítulos coesos. Após a aglutinação, um script extra opcional aplica formatação premium (emojis, tabelas, blockquotes) para unificar a identidade visual.
+- **Execução (Aglutinação):** `python 03_aglutinador_semantico.py`
+- **Execução Opcional (Polimento):** `python 03_b_formatador_final.py nome_do_arquivo_final.md`
 
 ### Fase 4: Compilação Final e Índice
 Junta todos os capítulos finalizados, gera um índice automático com âncoras HTML clicáveis e limpa resíduos de formatação.
