@@ -19,7 +19,7 @@ Crie um arquivo `.env` na raiz do projeto com suas chaves de API. O pipeline sup
 
 ```env
 API_KEY="sua_chave_api_aqui"
-API_BASE_URL="https://openrouter.ai/api/v1"
+API_BASE_URL="https://opencode.ai/zen/go/v1"
 MODEL_NAME="deepseek-v4-pro"
 ```
 

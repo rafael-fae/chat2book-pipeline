@@ -15,7 +15,7 @@ except ImportError:
 
 # Configurações dinâmicas via variáveis de ambiente
 API_KEY = os.environ.get("API_KEY")
-BASE_URL = os.environ.get("API_BASE_URL", "https://api.deepseek.com/v1") 
+BASE_URL = os.environ.get("API_BASE_URL", "https://opencode.ai/zen/go/v1") 
 MODEL_NAME = os.environ.get("MODEL_NAME", "deepseek-v4-pro") 
 
 if not API_KEY:
