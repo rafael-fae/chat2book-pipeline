@@ -15,13 +15,13 @@ except ImportError:
     pass
 
 # Configurações dinâmicas via variáveis de ambiente
-API_KEY = os.environ.get("OPENAI_API_KEY")
+API_KEY = os.environ.get("API_KEY")
 BASE_URL = os.environ.get("API_BASE_URL", "https://api.deepseek.com/v1") # Altere via export se necessário
-MODEL_NAME = os.environ.get("MODEL_NAME", "deepseek-chat") # Altere via export para o modelo desejado
+MODEL_NAME = os.environ.get("MODEL_NAME", "deepseek-v4-pro") # Altere via export para o modelo desejado
 
 if not API_KEY:
-    print("Erro: A variável de ambiente OPENAI_API_KEY não está configurada.")
-    print("Export a sua chave do OpenCode Go ou Z.ai no terminal: export OPENAI_API_KEY='sua_chave'")
+    print("Erro: A variável de ambiente API_KEY não está configurada.")
+    print("Export a sua chave do OpenCode Go ou Z.ai no terminal: export API_KEY='sua_chave'")
     sys.exit(1)
 
 # Inicializa o client apontando para o seu provedor

@@ -18,9 +18,9 @@ pip install -r requirements.txt
 Crie um arquivo `.env` na raiz do projeto com suas chaves de API. O pipeline suporta provedores compatíveis com a biblioteca da OpenAI (OpenRouter, DeepSeek, etc):
 
 ```env
-OPENAI_API_KEY="sua_chave_api_aqui"
+API_KEY="sua_chave_api_aqui"
 API_BASE_URL="https://openrouter.ai/api/v1"
-MODEL_NAME="deepseek/deepseek-chat"
+MODEL_NAME="deepseek-v4-pro"
 ```
 
 ### 3. Dados de Entrada

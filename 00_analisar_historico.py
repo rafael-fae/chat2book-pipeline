@@ -14,12 +14,12 @@ except ImportError:
     print("Dica: instale 'python-dotenv' para carregar variáveis de um arquivo .env automaticamente.")
 
 # Configurações dinâmicas via variáveis de ambiente
-API_KEY = os.environ.get("OPENAI_API_KEY")
+API_KEY = os.environ.get("API_KEY")
 BASE_URL = os.environ.get("API_BASE_URL", "https://api.deepseek.com/v1") 
-MODEL_NAME = os.environ.get("MODEL_NAME", "deepseek-chat") 
+MODEL_NAME = os.environ.get("MODEL_NAME", "deepseek-v4-pro") 
 
 if not API_KEY:
-    print("Erro: A variável de ambiente OPENAI_API_KEY não está configurada.")
+    print("Erro: A variável de ambiente API_KEY não está configurada.")
     sys.exit(1)
 
 client = OpenAI(api_key=API_KEY, base_url=BASE_URL)
