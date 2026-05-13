@@ -13,7 +13,7 @@ try:
 except ImportError:
     pass
 
-# Configurações para o DeepSeek V4 Pro (OpenCode Go)
+# Configurações dinâmicas via variáveis de ambiente
 API_KEY = os.environ.get("API_KEY")
 BASE_URL = os.environ.get("API_BASE_URL", "https://opencode.ai/zen/go/v1") 
 MODEL_NAME = os.environ.get("MODEL_NAME", "deepseek-v4-pro") 
