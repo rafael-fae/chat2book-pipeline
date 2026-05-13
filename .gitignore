@@ -1,0 +1,28 @@
+# Ambientes Python
+__pycache__/
+*.py[cod]
+*$py.class
+venv/
+env/
+.env
+.venv
+
+# Arquivos de dados sensíveis e gerados
+historico.txt
+filtered_historico.txt
+0*.md
+*_refinado.md
+*_final.md
+Ebook_Consolidado_Comunidade.md
+Ebook_Consolidado.md
+*.pdf
+
+# Manter apenas o README e documentação essencial
+!README.md
+!requirements.txt
+
+# Documentação interna da IA
+MEMORY.md
+
+# OS / Sistema
+.DS_Store
