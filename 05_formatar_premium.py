@@ -68,16 +68,26 @@ def revisar_capitulo(arquivo_entrada):
         f.write(texto_final)
     print("Concluído!")
 
+import glob
+
 def main():
-    if len(sys.argv) < 2:
-        print("Uso: python3 formatador_final.py nome_do_arquivo.md")
-        return
-        
-    arquivo = sys.argv[1]
-    if os.path.exists(arquivo):
-        revisar_capitulo(arquivo)
+    if len(sys.argv) > 1:
+        arquivo = sys.argv[1]
+        if os.path.exists(arquivo):
+            revisar_capitulo(arquivo)
+        else:
+            print(f"Arquivo não encontrado: {arquivo}")
     else:
-        print(f"Arquivo não encontrado: {arquivo}")
+        arquivos_finais = sorted(glob.glob('*_final.md'))
+        if not arquivos_finais:
+            print("Nenhum arquivo *_final.md encontrado para formatar.")
+            return
+            
+        for arquivo in arquivos_finais:
+            if not os.path.exists(arquivo.replace('.md', '_premium.md')):
+                revisar_capitulo(arquivo)
+            else:
+                print(f"Pulando {arquivo}, formatação premium já concluída.")
 
 if __name__ == "__main__":
     main()

@@ -47,7 +47,7 @@ def main():
                 break
                 
         if not titulo_capitulo:
-            titulo_capitulo = arquivo.replace('_final.md', '').replace('-', ' ').title()
+            titulo_capitulo = arquivo.replace('_final_premium.md', '').replace('_premium.md', '').replace('-', ' ').title()
 
         ancora_cap = gerar_ancora(titulo_capitulo)
         indice.append(f"- **[{titulo_capitulo}](#{ancora_cap})**")

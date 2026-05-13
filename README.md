@@ -15,7 +15,7 @@ pip install -r requirements.txt
 ```
 
 ### 2. Configuração de Ambiente
-Crie um arquivo `.env` na raiz do projeto com suas chaves de API. O pipeline suporta provedores compatíveis com a biblioteca da OpenAI (OpenRouter, DeepSeek, etc):
+Crie um arquivo `.env` na raiz do projeto com suas chaves de API. O pipeline suporta provedores compatíveis com a biblioteca da OpenAI (OpenRouter, DeepSeek, OpenCode Go, etc):
 
 ```env
 API_KEY="sua_chave_api_aqui"
@@ -35,54 +35,54 @@ Para o pipeline funcionar, você precisa fornecer o arquivo bruto do chat com o 
 
 ---
 
-## 🛠️ Arquitetura do Pipeline
+## 🛠️ O Fluxo de Execução (Pipeline 00 a 06)
 
-O pipeline é executado em fases sequenciais para garantir a máxima qualidade e evitar perda de contexto:
+O pipeline foi projetado para ser executado de forma estritamente sequencial, do passo `00` ao `06`. Cada script realiza uma transformação específica nos dados, passando o resultado para a próxima etapa.
 
-### Fase 0: Diagnóstico da Comunidade
-Analisa uma amostra do chat para identificar o nicho, sugerir categorias e palavras-chave de filtragem.
-- **Execução:** `python 00_analisar_historico.py`
+### `00` - Diagnóstico da Comunidade
+Analisa uma pequena amostra do `historico.txt` usando IA para descobrir o nicho do grupo, sugerir as grandes categorias para o E-book e recomendar palavras-chave.
+- **Como usar:** `python 00_analisar_historico.py`
+- **Ação:** Com o resultado deste script, você deve abrir o arquivo `02_categorizar_mensagens.py` e editar o dicionário `categories` com as palavras-chave sugeridas.
 
-### Fase 1: Pré-Filtro e Categorização Local
-Realiza uma limpeza bruta via Python, removendo metadados (timestamps, números) e separando as mensagens em arquivos Markdown por categoria. Há também um script extra para agrupar conversas por sessões temporais.
-- **Execução Opcional (Sessões temporais):** `python 01_b_filter_history.py`
-- **Dica:** Edite as categorias e palavras-chave dentro do script `01_extract_insights.py` com base no resultado da Fase 0.
-- **Execução:** `python 01_extract_insights.py`
+### `01` - Filtragem por Sessões Temporais
+Lê o `historico.txt` bruto e agrupa as mensagens baseando-se em proximidade de tempo (sessões de 15 minutos). O script ignora conversas irrelevantes e mantém apenas blocos onde certas palavras-chave (definidas no código) aparecem múltiplas vezes.
+- **Como usar:** `python 01_filtrar_sessoes.py`
+- **Saída:** Gera o arquivo `filtered_historico.txt` contendo apenas as conversas com potencial.
 
-### Fase 2: Refinamento com IA (Chunking)
-Usa a IA para processar os arquivos em blocos, removendo informações datadas (promoções expiradas, bugs antigos) e focando em conteúdo perene.
-- **Configuração:** O comportamento da IA é definido pelo arquivo `prompt_consolidador.xml`.
-- **Execução:** `python 02_gerar_ebook.py`
+### `02` - Categorização e Limpeza Bruta
+Lê o `filtered_historico.txt`, remove metadados do WhatsApp (datas, horas, nomes de usuários) e usa heurísticas de palavras-chave para distribuir as mensagens nos tópicos (capítulos) adequados.
+- **Como usar:** `python 02_categorizar_mensagens.py`
+- **Saída:** Gera múltiplos arquivos `.md` (ex: `01-acumulo.md`, `02-emissoes.md`).
 
-### Fase 3: Aglutinação Semântica e Polimento
-Utiliza modelos de contexto massivo para desfragmentar o conteúdo. Assuntos repetidos são unidos em sub-capítulos coesos. Após a aglutinação, um script extra opcional aplica formatação premium (emojis, tabelas, blockquotes) para unificar a identidade visual.
-- **Execução (Aglutinação):** `python 03_aglutinador_semantico.py`
-- **Execução Opcional (Polimento):** `python 03_b_formatador_final.py nome_do_arquivo_final.md`
+### `03` - Refinamento de Conteúdo Perene (Chunking)
+Processa cada arquivo Markdown em blocos (chunks) usando a IA. O objetivo aqui é **remover ruído temporal**: promoções expiradas, preços antigos ou discussões irrelevantes, mantendo apenas regras duradouras.
+- **Como usar:** `python 03_refinar_ia_chunking.py`
+- **Saída:** Gera arquivos com o sufixo `_refinado.md`.
 
-### Fase 4: Compilação Final e Índice
-Junta todos os capítulos finalizados, gera um índice automático com âncoras HTML clicáveis e limpa resíduos de formatação.
-- **Execução:** `python 04_compilar_final.py`
-- **Resultado:** Gera o arquivo `Ebook_Consolidado_Comunidade.md`.
+### `04` - Aglutinação Semântica (Map-Reduce)
+Devido ao processamento em blocos do passo anterior, informações sobre a mesma coisa (ex: "Livelo") podem ficar espalhadas. Este passo joga o arquivo inteiro em uma IA de contexto massivo para desfragmentar o conteúdo, aglutinando tudo o que for semelhante em um único bloco contínuo e eliminando repetições.
+- **Como usar:** `python 04_aglutinar_semantica.py`
+- **Saída:** Gera arquivos com o sufixo `_final.md`.
+
+### `05` - Formatação e Polimento Premium
+Aplica a identidade visual do seu E-book. A IA revisa o texto inserindo emojis elegantes nos títulos (H1, H2, H3), transforma dicas importantes em blocos de citação Markdown (`> 💡 Dica de Ouro`) e converte dados estruturados em tabelas para melhorar a leitura.
+- **Como usar:** `python 05_formatar_premium.py`
+- **Saída:** Gera arquivos com o sufixo `_premium.md`.
+
+### `06` - Compilação Final e Geração de Índice
+Junta todos os arquivos `_premium.md` em um único arquivo mestre. Adiciona um sumário (índice) no topo com âncoras HTML nativas invisíveis, permitindo que os links funcionem perfeitamente quando convertido para PDF.
+- **Como usar:** `python 06_compilar_ebook.py`
+- **Saída:** Gera o arquivo final `Ebook_Consolidado_Comunidade.md`.
 
 ---
 
 ## 🖨️ Conversão para PDF
 
-Para gerar o arquivo PDF final com estilo profissional, utilize o `mdpdf`:
+Com o seu arquivo `.md` consolidado em mãos, utilize o `mdpdf` para gerar o e-book final:
 
 ```bash
 npx mdpdf Ebook_Consolidado_Comunidade.md
 ```
-
----
-
-## 📁 Estrutura de Arquivos
-
-- `0*.py`: Scripts numerados de acordo com a fase de execução.
-- `prompt_consolidador.xml`: Instruções detalhadas para a IA.
-- `requirements.txt`: Dependências do projeto.
-- `historico.txt`: Seu arquivo bruto (não incluso no repositório).
-- `README.md`: Este guia de uso.
 
 ---
 *Desenvolvido para transformar conversas em conhecimento estruturado.*
