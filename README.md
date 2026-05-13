@@ -23,8 +23,15 @@ API_BASE_URL="https://opencode.ai/zen/go/v1"
 MODEL_NAME="deepseek-v4-pro"
 ```
 
-### 3. Dados de Entrada
-Coloque o seu arquivo de exportação de chat na raiz do projeto com o nome `historico.txt`.
+### 3. Dados de Entrada (Exportando o Histórico)
+Para o pipeline funcionar, você precisa fornecer o arquivo bruto do chat com o nome **`historico.txt`** na raiz do projeto.
+
+**Como exportar do WhatsApp:**
+1. Abra o grupo ou conversa no WhatsApp (pelo celular).
+2. Toque no nome do grupo (no topo).
+3. Role até o final e selecione **"Exportar conversa"**.
+4. Escolha a opção **"Sem mídia"** (isso gera um arquivo `.txt` apenas com os textos).
+5. Salve o arquivo gerado, renomeie-o para `historico.txt` e coloque-o na pasta principal do seu projeto.
 
 ---
 
